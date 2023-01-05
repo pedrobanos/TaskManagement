@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskManagement.Entities;
 
 namespace TaskManagement
 {
@@ -7,5 +8,6 @@ namespace TaskManagement
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+        public DbSet<Tarea> Tasks { get; set; }
     }
 }
