@@ -8,6 +8,6 @@ namespace TaskManagement
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<Tarea> Tasks { get; set; }
+        public DbSet<Tarea> Tareas { get; set; }
     }
 }
