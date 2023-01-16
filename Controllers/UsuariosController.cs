@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.Models;
@@ -16,8 +17,8 @@ namespace TaskManagement.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-        [AllowAnonymous]
 
+        [AllowAnonymous]
         public IActionResult Registro()
         {
             return View();
@@ -51,5 +52,41 @@ namespace TaskManagement.Controllers
                 return View(modelo);
             }
         }
+
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult>Login(LoginViewModel modelo) 
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(modelo);
+            }
+
+            var resultado = await signInManager.PasswordSignInAsync(modelo.Email,
+                modelo.Password, modelo.Recuerdame, lockoutOnFailure: false);//lockoutOnFailure: false significa que si el 
+            if (resultado.Succeeded)                                          // usuario se confunde en muchos intentos se bloquea la cuenta
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else 
+            {
+                ModelState.AddModelError(string.Empty, "Email o password incorrecta");
+                return View(modelo);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout() 
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }
