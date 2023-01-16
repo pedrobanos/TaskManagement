@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TaskManagement.Entities;
 
 namespace TaskManagement
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext //nos permite traer tablas que tiene que ver con users roles etc
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
